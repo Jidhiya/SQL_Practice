@@ -1,0 +1,27 @@
+-- Low fat and recyclable products
+select product_id from products where low_fats = 'Y' and  recyclable = 'Y'
+
+--Find Customer referee
+select name from customer where referee_id !=2 or referee_id is null
+
+--Big Countries
+select name, population, area from world where area >= 3000000 or population >= 25000000
+
+-- Article Views
+select distinct author_id as id from views where viewer_id = author_id order by author_id 
+
+--Invalid Tweets
+select tweet_id from tweets where length(content) > 15
+
+--Employee Unique Id
+select eu.unique_id , e.name 
+from employees e left join employeeUNI eu
+on e.id = eu.id
+order by name 
+
+
+--Product Sales Analysis
+select p.product_name, s.year, s.price
+from sales s inner join product p 
+on s.product_id = p.product_id 
+
