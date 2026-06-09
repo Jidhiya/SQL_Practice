@@ -22,3 +22,18 @@ WHERE
 extract(year from post_date) = 2021
 group by user_id
 having count(post_id) >=2 
+
+---Teams Power Users
+SELECT sender_id, count(message_id) as message_count FROM messages
+WHERE sent_date >= '2022-08-01' and sent_date < '2022-09-01'
+group by sender_id
+order by message_count DESC
+limit 2
+
+---job_listings
+select count(distinct company_id) as dupolicate_companies
+FROM
+(select company_id, title, description
+from job_listings 
+group by company_id, title, description
+having count(*) > 1) t
