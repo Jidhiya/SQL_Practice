@@ -31,9 +31,45 @@ order by message_count DESC
 limit 2
 
 ---job_listings
-select count(distinct company_id) as dupolicate_companies
+select count(distinct company_id) as duplicate_companies
 FROM
 (select company_id, title, description
 from job_listings 
 group by company_id, title, description
 having count(*) > 1) t
+
+----Cities With Completed Trades
+SELECT u.city, count(t.order_id) as total_orders
+FROM users u inner join trades t 
+on u.user_id = t.user_id
+where t.status = 'Completed'
+group by u.city 
+order by total_orders DESC
+limit 3
+
+----Tweets Using CTE
+with user_tweets AS 
+( Select user_id, count(*) as tweet_bucket
+from tweets
+where extract(year from tweet_date) = 2022
+group by user_id)
+
+SELECT
+    tweet_bucket,
+    COUNT(user_id) AS users_num
+FROM user_tweets
+GROUP BY tweet_bucket
+ORDER BY tweet_bucket;
+
+--- Amazon average review ratings
+SELECT
+    EXTRACT(MONTH FROM submit_date) AS mth,
+    product_id,
+    ROUND(AVG(stars), 2) AS avg_stars
+FROM reviews
+GROUP BY
+    EXTRACT(MONTH FROM submit_date),
+    product_id
+ORDER BY
+    mth,
+    product_id;
