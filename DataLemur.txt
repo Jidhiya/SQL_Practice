@@ -73,3 +73,19 @@ GROUP BY
 ORDER BY
     mth,
     product_id;
+
+----employee manager salary
+SELECT emp.employee_id , emp.name
+from employee emp inner join employee mgr
+on emp.manager_id = mgr.employee_id
+WHERE
+emp.salary > mgr.salary
+
+--- app click through rate
+SELECT app_id, round(100.0 * sum(case when event_type = 'click' then 1 else 0 end)/
+sum(case when event_type = 'impression' then 1 else 0 end), 2) as ctr 
+FROM events
+WHERE
+extract(year from TIMESTAMP) = 2022
+group by app_id 
+
